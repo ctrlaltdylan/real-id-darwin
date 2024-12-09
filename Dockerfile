@@ -65,8 +65,12 @@ RUN docker-php-ext-install \
 COPY --from=build-stage /var/www/html /var/www/html
 
 # Copy nginx site configuration
-ADD conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
-RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+COPY conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
+
+# Remove default Nginx configuration to avoid conflicts
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
