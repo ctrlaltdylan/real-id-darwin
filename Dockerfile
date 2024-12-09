@@ -46,20 +46,24 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
+    libpq-dev \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+
 # Install PHP extensions
 RUN docker-php-ext-install \
-    pdo_pgsql \
     mbstring \
     exif \
     pcntl \
     bcmath \
     gd \
     dom \
-    xml
+    xml \
+    pdo \
+    pdo_pgsql
 
 # Copy application files from build stage
 COPY --from=build-stage /var/www/html /var/www/html
