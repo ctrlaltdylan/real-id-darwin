@@ -7,7 +7,7 @@
         "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix"
     },
     "devDependencies": {
-        "@headlessui/react": "^2.0.0",
+        "@headlessui/react": "^2.2.0",
         "@inertiajs/react": "^1.0.0",
         "@inertiajs/vue3": "^1.0.0",
         "@rushstack/eslint-patch": "^1.8.0",
@@ -45,12 +45,21 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@heroicons/react": "^2.2.0",
         "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/react": "^1.2.0",
+        "@sentry/react": "^8.42.0",
+        "@tippyjs/react": "^4.2.6",
         "@vitejs/plugin-react": "^4.3.4",
+        "chrono-node": "^2.7.7",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
+        "lodash": "^4.17.21",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "react-icons": "^5.4.0",
+        "react-lottie": "^1.2.10",
+        "react-modal-image": "^2.6.0",
+        "use-gauge": "^0.7.0"
     }
 }

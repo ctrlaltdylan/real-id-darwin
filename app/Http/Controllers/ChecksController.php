@@ -29,28 +29,36 @@ class ChecksController extends Controller
 
         $body = json_decode($response->getBody(), true);
 
-        return Inertia::render('CheckDetails', $body);
+        $shop_response = $shop->api()->request('GET', 'shop');
+        $shop_body = json_decode($shop_response->getBody(), true);
+
+        $json = [
+            'check' => $body['check'],
+            'shop' => $shop_body,
+        ];
+
+        return Inertia::render('CheckDetails', $json);
     }
 
     public function manually_approve(Request $request, $id) {
         $user = $request->user();
         $shop = $user->shop;
 
-        $response = $shop->api()->request('POST', "checks/{$id}/manually-approve");
+        $response = $shop->api()->request('POST', "checks/{$id}/manual-approval");
 
         $body = json_decode($response->getBody(), true);
 
-        return response()->json($body);
+        return redirect()->route('checks.show', $id)->with('message', 'Manually approved ID check')->with('status', 'success');
     }
 
     public function manually_reject(Request $request, $id) {
         $user = $request->user();
         $shop = $user->shop;
 
-        $response = $shop->api()->request('POST', "checks/{$id}/manually-reject");
+        $response = $shop->api()->request('POST', "checks/{$id}/manual-rejection");
 
         $body = json_decode($response->getBody(), true);
 
-        return response()->json($body);
+        return redirect()->route('checks.show', $id)->with('message', 'Manually rejected ID check')->with('status', 'success');
     } 
 }
