@@ -1,26 +1,45 @@
-# Build stage for dependencies and assets
-FROM node:18 as build-stage
+# Combined build stage for PHP and Node.js dependencies and assets
+FROM php:8.3-fpm AS build-stage
+
+# Install Node.js v18 and system dependencies
+RUN apt-get update && apt-get install -y \
+    nginx \
+    curl \
+    git \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    dom \
+    xml
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Set working directory
 WORKDIR /var/www/html
 
 # Copy application files
-COPY package*.json /var/www/html/
+COPY . /var/www/html/
 
-# Install dependencies and build assets
-RUN npm install && npm run build
-
-# Composer stage
-FROM composer:latest as composer-stage
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy application files
-COPY composer.* /var/www/html/
-
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install Node.js dependencies and build assets
+RUN npm install && npm run build
 
 # Final production stage
 FROM php:8.3-fpm
@@ -43,10 +62,8 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Copy application files from build stages
-COPY --from=build-stage /var/www/html/public /var/www/html/public
-COPY --from=build-stage /var/www/html/node_modules /var/www/html/node_modules
-COPY --from=composer-stage /var/www/html /var/www/html
+# Copy application files from build stage
+COPY --from=build-stage /var/www/html /var/www/html
 
 # Copy nginx site configuration
 COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
@@ -59,4 +76,4 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80
 
 # Start the application stack
-CMD ["/bin/sh", "-c", "php artisan inertia:start-ssr & php-fpm & nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "cd /var/www/html && php artisan inertia:start-ssr & php-fpm & nginx -g 'daemon off;'"]
