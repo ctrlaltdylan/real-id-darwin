@@ -65,14 +65,16 @@ RUN docker-php-ext-install \
 COPY --from=build-stage /var/www/html /var/www/html
 
 # Copy nginx site configuration
-COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
+ADD conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf
+ADD conf/nginx/nginx-site-ssl.conf /etc/nginx/sites-available/default-ssl.conf
+RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 80 9000
 
 # Start the application stack
 CMD ["/bin/sh", "-c", "cd /var/www/html && php artisan inertia:start-ssr & php-fpm & nginx -g 'daemon off;'"]
