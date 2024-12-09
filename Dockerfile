@@ -66,7 +66,6 @@ COPY --from=build-stage /var/www/html /var/www/html
 
 # Copy nginx site configuration
 ADD conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf
-ADD conf/nginx/nginx-site-ssl.conf /etc/nginx/sites-available/default-ssl.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 # Set permissions
