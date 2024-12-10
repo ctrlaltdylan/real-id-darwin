@@ -10,6 +10,16 @@ use GuzzleHttp\Client;
 
 class Shop extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'api_key',
+    ];
+
     public function users() {
       return $this->hasMany(User::class);
     }
