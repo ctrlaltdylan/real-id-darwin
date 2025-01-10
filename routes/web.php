@@ -36,4 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
 });
 
+Route::group(['prefix' => 'api'], function () {
+    Route::post('/queue', [JobController::class, 'store'])->name('api.queue');
+});
+
 require __DIR__.'/auth.php';

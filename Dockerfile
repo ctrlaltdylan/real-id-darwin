@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
+    && apt-get install -y supervisor \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -49,6 +50,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
+    && apt-get install -y supervisor \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -87,4 +89,4 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80 9000
 
 # Start the application stack
-CMD ["/bin/sh", "-c", "cd /var/www/html && php artisan inertia:start-ssr & php-fpm & nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start \"laravel-worker:*\" && cd /var/www/html && php artisan queue:work database --stop-when-empty & php-fpm & nginx -g 'daemon off;'"]
