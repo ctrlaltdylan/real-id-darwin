@@ -103,5 +103,14 @@ class JkDistroSeeder extends Seeder
                 'shop_id' => 3,
             ]
         );
+
+        User::firstOrCreate(
+            ['email' => 'C87721642@gmail.com'],
+            [
+                'name' => 'Cheyenne Martinez',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
     }
 }
