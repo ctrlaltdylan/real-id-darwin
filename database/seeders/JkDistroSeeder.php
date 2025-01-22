@@ -14,61 +14,94 @@ class JkDistroSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Austin Allen',
-            'email' => 'john.allen2322@gmail.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'john.allen2322@gmail.com'],
+            [
+                'name' => 'Austin Allen',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Lacey Kissinger',
-            'email' => 'lacey@evocann.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]); 
+        User::firstOrCreate(
+            ['email' => 'john.allen2322@gmail.com'],
+            [
+                'name' => 'Cheyenne Martinez',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Monique Brown',
-            'email' => 'monique@jkdistro.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'lacey@evocann.com'],
+            [
+                'name' => 'Lacey Kissinger',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Sandra Escaleira',
-            'email' => 'sescalei1@gmail.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'monique@jkdistro.com'],
+            [
+                'name' => 'Monique Brown',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
+        User::firstOrCreate(
+            ['email' => 'sescalei1@gmail.com'],
+            [
+                'name' => 'Sandra Escaleira',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Shaniece',
-            'email' => 'shaniece@jkdistro.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'shaniece@jkdistro.com'],
+            [
+                'name' => 'Shaniece',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Shawna',
-            'email' => 'shawna@jkdistro.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'shawna@jkdistro.com'],
+            [
+                'name' => 'Shawna',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Thembeka',
-            'email' => 'thembeka@jkdistro.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'thembeka@jkdistro.com'],
+            [
+                'name' => 'Thembeka',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
 
-        User::create([
-            'name' => 'Yadira Madriz',
-            'email' => 'yadira@jkdistro.com',
-            'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
-            'shop_id' => 3,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'yadira@jkdistro.com'],
+            [
+                'name' => 'Yadira Madriz',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'info@jkdistro.com'],
+            [
+                'name' => '',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
     }
 }
