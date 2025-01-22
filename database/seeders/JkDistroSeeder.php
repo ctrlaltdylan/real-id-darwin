@@ -112,5 +112,14 @@ class JkDistroSeeder extends Seeder
                 'shop_id' => 3,
             ]
         );
+
+        User::firstOrCreate(
+            ['email' => 'sean@getautomized.com'],
+            [
+                'name' => 'Sean Pray',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
     }
 }
