@@ -14,11 +14,32 @@ class ChecksController extends Controller
         $user = $request->user();
         $shop = $user->shop;
 
-        $response = $shop->api()->request('GET', 'checks');
+        $filters = $request->input('checkStatuses', []);
+        $term = $request->input('searchTerm', '');
+        $archived = $request->input('archived', false);
+
+        $response = $shop->api()->request('GET', 'checks', [
+            'query' => [
+                'checkStatuses' => $filters,
+                'searchTerm' => $term,
+                'archived' => $archived,
+            ],
+        ]);
 
         $body = json_decode($response->getBody(), true);
 
-        return Inertia::render('Dashboard', $body);
+        $props = [
+            'checks' => $body['checks'],
+            'totalChecks' => $body['totalChecks'],
+            'totalPages' => $body['totalPages'],
+            'page' => $body['page'],
+            'size' => $body['size'],
+            'searchTerm' => $body['searchTerm'],
+            'checkStatuses' => $body['checkStatuses'],
+            'archived' => $body['archived'],
+        ];
+
+        return Inertia::render('Dashboard', $props);
     }
 
     public function show(Request $request, $id) {

@@ -1,9 +1,38 @@
 import StatusBadge from '@/Components/Checks/StatusBadge';
+import Filters from '@/Components/Home/Filters';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
 
-function Checks({ checks }: { checks: any }) {
+function Checks({
+    checks,
+    totalChecks,
+    totalPages,
+    page,
+    size,
+    searchTerm,
+    checkStatuses,
+    archived,
+}: {
+    checks: any;
+    totalChecks: number;
+    totalPages: number;
+    page: number;
+    size: number;
+    searchTerm: string;
+    checkStatuses: string[];
+    archived: boolean;
+}) {
+    console.log({
+        checks,
+        checkStatuses,
+        archived,
+        searchTerm,
+        totalChecks,
+        totalPages,
+        page,
+        size,
+    });
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 sm:px-6 lg:px-8">
@@ -18,6 +47,11 @@ function Checks({ checks }: { checks: any }) {
                         />
                     </div>
                 </div> */}
+                <Filters
+                    checkStatuses={checkStatuses}
+                    archived={archived}
+                    searchTerm={searchTerm}
+                />
                 <div className="mt-8 flow-root">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -112,7 +146,7 @@ function Checks({ checks }: { checks: any }) {
     );
 }
 
-export default function Dashboard({ checks }: { checks: any }) {
+export default function Dashboard(props) {
     return (
         <AuthenticatedLayout
             header={
@@ -125,7 +159,7 @@ export default function Dashboard({ checks }: { checks: any }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <Checks checks={checks} />
+                    <Checks {...props} />
                 </div>
             </div>
         </AuthenticatedLayout>
