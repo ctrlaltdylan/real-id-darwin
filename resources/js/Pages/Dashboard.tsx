@@ -1,5 +1,6 @@
 import StatusBadge from '@/Components/Checks/StatusBadge';
 import Filters from '@/Components/Home/Filters';
+import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
@@ -138,6 +139,32 @@ function Checks({
                                     ))}
                                 </tbody>
                             </table>
+
+                            <Pagination
+                                currentPage={page}
+                                totalPages={totalPages}
+                                handleSelectPage={(page) => {
+                                    router.visit(`/dashboard?page=${page}`, {
+                                        preserveScroll: true,
+                                    });
+                                }}
+                                handleNext={() => {
+                                    router.visit(
+                                        `/dashboard?page=${page + 1}`,
+                                        {
+                                            preserveScroll: true,
+                                        },
+                                    );
+                                }}
+                                handlePrevious={() => {
+                                    router.visit(
+                                        `/dashboard?page=${page - 1}`,
+                                        {
+                                            preserveScroll: true,
+                                        },
+                                    );
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
