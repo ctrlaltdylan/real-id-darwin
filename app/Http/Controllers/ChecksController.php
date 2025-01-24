@@ -23,6 +23,7 @@ class ChecksController extends Controller
                 'checkStatuses' => $filters,
                 'searchTerm' => $term,
                 'archived' => $archived,
+                'page' => $request->input('page', 0),
             ],
         ]);
 

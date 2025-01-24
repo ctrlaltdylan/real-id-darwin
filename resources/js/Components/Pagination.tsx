@@ -3,16 +3,21 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 export default function Pagination({
     handleNext,
     handlePrevious,
-    currentPage,
+    page,
+    size = 25,
     totalPages,
+    totalResults,
     handleSelectPage,
 }: {
-    currentPage: number;
+    page: number;
+    size: number;
     totalPages: number;
+    totalResults: number;
     handleNext: () => void;
     handlePrevious: () => void;
     handleSelectPage: (page: number) => void;
 }) {
+    console.log({ page });
     return (
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
             <div className="flex flex-1 justify-between sm:hidden">
@@ -34,9 +39,16 @@ export default function Pagination({
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-gray-700">
-                        Showing <span className="font-medium">1</span> to{' '}
-                        <span className="font-medium">10</span> of{' '}
-                        <span className="font-medium">97</span> results
+                        Showing{' '}
+                        <span className="font-medium">{page * size + 1}</span>{' '}
+                        to{' '}
+                        <span className="font-medium">
+                            {totalResults < page * size + size
+                                ? totalResults
+                                : page * size + size}
+                        </span>{' '}
+                        of <span className="font-medium">{totalResults}</span>{' '}
+                        results
                     </p>
                 </div>
                 <div>
@@ -56,46 +68,41 @@ export default function Pagination({
                             />
                         </a>
                         {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                        <a
-                            href="#"
-                            aria-current="page"
-                            className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            1
-                        </a>
-                        <a
-                            href="#"
-                            className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                        >
-                            2
-                        </a>
-                        <a
-                            href="#"
-                            className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                        >
-                            3
-                        </a>
-                        <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-                            ...
-                        </span>
-                        <a
-                            href="#"
-                            className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                        >
-                            8
-                        </a>
-                        <a
-                            href="#"
-                            className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                        >
-                            9
-                        </a>
-                        <a
-                            href="#"
-                            className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                        >
-                            10
-                        </a>
+                        {totalPages > 1 && (
+                            <>
+                                {Array.from(
+                                    { length: totalPages },
+                                    (_, index) => (
+                                        <a
+                                            key={index + 1}
+                                            href="#"
+                                            aria-current={
+                                                page === index + 1
+                                                    ? 'page'
+                                                    : undefined
+                                            }
+                                            data-index={index + 1}
+                                            data-active={page == index + 1}
+                                            className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                                                page === index + 1
+                                                    ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                                    : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'
+                                            } ${index + 1 > 3 && index + 1 < totalPages - 2 ? 'hidden md:inline-flex' : ''}`}
+                                            onClick={() =>
+                                                handleSelectPage(index + 1)
+                                            }
+                                        >
+                                            {index + 1}
+                                        </a>
+                                    ),
+                                )}
+                                {totalPages > 5 && (
+                                    <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+                                        ...
+                                    </span>
+                                )}
+                            </>
+                        )}
                         <a
                             href="#"
                             className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

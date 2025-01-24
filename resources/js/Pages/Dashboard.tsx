@@ -1,6 +1,7 @@
 import StatusBadge from '@/Components/Checks/StatusBadge';
 import Filters from '@/Components/Home/Filters';
 import Pagination from '@/Components/Pagination';
+import { getQueryParams } from '@/helpers';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
@@ -18,11 +19,12 @@ function Checks({
     checks: any;
     totalChecks: number;
     totalPages: number;
-    page: number;
+    currentPage: number;
     size: number;
     searchTerm: string;
     checkStatuses: string[];
     archived: boolean;
+    page: number;
 }) {
     console.log({
         checks,
@@ -31,9 +33,10 @@ function Checks({
         searchTerm,
         totalChecks,
         totalPages,
-        page,
         size,
+        page,
     });
+
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 sm:px-6 lg:px-8">
@@ -141,28 +144,39 @@ function Checks({
                             </table>
 
                             <Pagination
-                                currentPage={page}
+                                page={page}
+                                size={size}
                                 totalPages={totalPages}
+                                totalResults={totalChecks}
                                 handleSelectPage={(page) => {
-                                    router.visit(`/dashboard?page=${page}`, {
+                                    const params = getQueryParams();
+                                    router.visit(`/dashboard`, {
+                                        data: {
+                                            ...params,
+                                            page: page,
+                                        },
                                         preserveScroll: true,
                                     });
                                 }}
                                 handleNext={() => {
-                                    router.visit(
-                                        `/dashboard?page=${page + 1}`,
-                                        {
-                                            preserveScroll: true,
+                                    const params = getQueryParams();
+                                    router.visit(`/dashboard`, {
+                                        data: {
+                                            ...params,
+                                            page: page + 1,
                                         },
-                                    );
+                                        preserveScroll: true,
+                                    });
                                 }}
                                 handlePrevious={() => {
-                                    router.visit(
-                                        `/dashboard?page=${page - 1}`,
-                                        {
-                                            preserveScroll: true,
+                                    const params = getQueryParams();
+                                    router.visit(`/dashboard`, {
+                                        data: {
+                                            ...params,
+                                            page: page - 1,
                                         },
-                                    );
+                                        preserveScroll: true,
+                                    });
                                 }}
                             />
                         </div>
