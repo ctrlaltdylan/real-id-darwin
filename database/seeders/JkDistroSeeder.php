@@ -121,5 +121,15 @@ class JkDistroSeeder extends Seeder
                 'shop_id' => 3,
             ]
         );
+
+
+        User::firstOrCreate(
+            ['email' => 'support+jkdistro@getverdict.com.com'],
+            [
+                'name' => 'Real ID Support',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+                'shop_id' => 3,
+            ]
+        );
     }
 }
