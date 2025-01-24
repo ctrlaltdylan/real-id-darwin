@@ -192,7 +192,7 @@ export default function Dashboard(props) {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Checks
+                    ID Checks
                 </h2>
             }
         >
