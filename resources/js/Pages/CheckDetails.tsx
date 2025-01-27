@@ -12,6 +12,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useEffect, useState } from 'react';
 
 import ManualApprovalModal from '@/Components/Checks/Details/ManualApprovalModal';
+import Progress from '@/Components/Checks/Details/Progress';
 import useSecondaryActions from '@/Components/Checks/Details/useSecondaryActions';
 import ManualRejectionModal from '@/Components/Checks/ManualRejectionModal';
 import Toast from '@/Components/Toast';
@@ -74,6 +75,7 @@ export default function CheckDetails({
                             },
                         ]}
                     />
+                    <Progress check={check} />
 
                     <Card>
                         {check.job?.result || check.idPhoto ? (
