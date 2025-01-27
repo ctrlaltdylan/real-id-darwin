@@ -27,7 +27,7 @@ const filters = [
         options: [
             { value: 'in_progress', label: 'In Progress', checked: false },
             { value: 'in_review', label: 'In Review', checked: false },
-            { value: 'verified', label: 'Completed', checked: false },
+            { value: 'verified', label: 'Verified', checked: false },
             { value: 'failed', label: 'Failed', checked: true },
         ],
     },
@@ -296,7 +296,7 @@ export default function Filters({
                                                 <span>{section.name}</span>
                                                 {sectionIdx === 0 ? (
                                                     <span className="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700">
-                                                        1
+                                                        {checkStatuses.length}
                                                     </span>
                                                 ) : null}
                                                 <ChevronDownIcon
@@ -446,64 +446,32 @@ export default function Filters({
                 </div>
 
                 {/* Active filters */}
-                <div className="bg-gray-100">
-                    <div className="mx-auto max-w-7xl px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
-                        <h3 className="text-sm font-medium text-gray-500">
-                            Filters
-                            <span className="sr-only">, active</span>
-                        </h3>
+                {checkStatuses.length > 0 && (
+                    <div className="bg-gray-100">
+                        <div className="mx-auto max-w-7xl px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
+                            <h3 className="text-sm font-medium text-gray-500">
+                                Filters
+                                <span className="sr-only">, active</span>
+                            </h3>
 
-                        <div
-                            aria-hidden="true"
-                            className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
-                        />
+                            <div
+                                aria-hidden="true"
+                                className="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"
+                            />
 
-                        <div className="mt-2 sm:ml-4 sm:mt-0">
-                            <div className="-m-1 flex flex-wrap items-center">
-                                {checkStatuses.map((activeFilter) => (
-                                    <span
-                                        key={
-                                            hydrateFilter(
-                                                'status',
-                                                activeFilter,
-                                            )?.label
-                                        }
-                                        className="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900"
-                                    >
-                                        <span>
-                                            {
+                            <div className="mt-2 sm:ml-4 sm:mt-0">
+                                <div className="-m-1 flex flex-wrap items-center">
+                                    {checkStatuses.map((activeFilter) => (
+                                        <span
+                                            key={
                                                 hydrateFilter(
                                                     'status',
                                                     activeFilter,
                                                 )?.label
                                             }
-                                        </span>
-                                        <button
-                                            type="button"
-                                            className="ml-1 inline-flex size-4 shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-500"
-                                            onClick={() => {
-                                                const newCheckStatuses =
-                                                    checkStatuses.filter(
-                                                        (status) =>
-                                                            status !==
-                                                            activeFilter,
-                                                    );
-                                                router.visit(
-                                                    window.location.href.split(
-                                                        '?',
-                                                    )[0],
-                                                    {
-                                                        method: 'get',
-                                                        data: {
-                                                            checkStatuses:
-                                                                newCheckStatuses,
-                                                        },
-                                                    },
-                                                );
-                                            }}
+                                            className="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900"
                                         >
-                                            <span className="sr-only">
-                                                Remove filter for{' '}
+                                            <span>
                                                 {
                                                     hydrateFilter(
                                                         'status',
@@ -511,25 +479,59 @@ export default function Filters({
                                                     )?.label
                                                 }
                                             </span>
-                                            <svg
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 8 8"
-                                                className="size-2"
+                                            <button
+                                                type="button"
+                                                className="ml-1 inline-flex size-4 shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-500"
+                                                onClick={() => {
+                                                    const newCheckStatuses =
+                                                        checkStatuses.filter(
+                                                            (status) =>
+                                                                status !==
+                                                                activeFilter,
+                                                        );
+                                                    router.visit(
+                                                        window.location.href.split(
+                                                            '?',
+                                                        )[0],
+                                                        {
+                                                            method: 'get',
+                                                            data: {
+                                                                checkStatuses:
+                                                                    newCheckStatuses,
+                                                            },
+                                                        },
+                                                    );
+                                                }}
                                             >
-                                                <path
-                                                    d="M1 1l6 6m0-6L1 7"
-                                                    strokeWidth="1.5"
-                                                    strokeLinecap="round"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </span>
-                                ))}
+                                                <span className="sr-only">
+                                                    Remove filter for{' '}
+                                                    {
+                                                        hydrateFilter(
+                                                            'status',
+                                                            activeFilter,
+                                                        )?.label
+                                                    }
+                                                </span>
+                                                <svg
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 8 8"
+                                                    className="size-2"
+                                                >
+                                                    <path
+                                                        d="M1 1l6 6m0-6L1 7"
+                                                        strokeWidth="1.5"
+                                                        strokeLinecap="round"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </section>
         </div>
     );

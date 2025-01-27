@@ -475,3 +475,15 @@ export function prettifyName(name: string): string {
 
     return name;
 }
+
+/**
+ * Get the search params from the current URL
+ *
+ * @returns {Object}
+ */
+export function getQueryParams() {
+    const searchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(searchParams.entries());
+
+    return params;
+}
