@@ -37,3 +37,7 @@ export default function Card({
         </div>
     );
 }
+
+export function Section({ children }: { children: React.ReactNode }) {
+    return <div className="border-t border-gray-200">{children}</div>;
+}

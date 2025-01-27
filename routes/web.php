@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChecksController;
 use App\Http\Controllers\DevelopersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,8 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
 
     Route::get('/developers', [DevelopersController::class, 'index'])->name('developers');
-
-
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 Route::group(['prefix' => 'api'], function () {
