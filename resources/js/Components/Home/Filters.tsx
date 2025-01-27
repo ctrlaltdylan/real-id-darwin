@@ -27,7 +27,7 @@ const filters = [
         options: [
             { value: 'in_progress', label: 'In Progress', checked: false },
             { value: 'in_review', label: 'In Review', checked: false },
-            { value: 'verified', label: 'Completed', checked: false },
+            { value: 'verified', label: 'Verified', checked: false },
             { value: 'failed', label: 'Failed', checked: true },
         ],
     },

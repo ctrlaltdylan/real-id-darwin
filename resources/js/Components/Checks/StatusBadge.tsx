@@ -53,7 +53,7 @@ export default function renderBadge({
         );
     } else if (step === 'completed' && !success) {
         return (
-            <Badge progress="completed" status="critical">
+            <Badge progress="completed" status="error">
                 Failed Verification
             </Badge>
         );
