@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChecksController;
+use App\Http\Controllers\DevelopersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,10 +35,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/checks/{id}', [ChecksController::class, 'show'])->name('checks.show');
     Route::post('/checks/{id}/manually-approve', [ChecksController::class, 'manually_approve'])->name('checks.manually_approve'); 
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
+
+    Route::get('/developers', [DevelopersController::class, 'index'])->name('developers');
+
+
 });
 
 Route::group(['prefix' => 'api'], function () {
     Route::post('/queue', [JobController::class, 'store'])->name('api.queue');
 });
+
+
 
 require __DIR__.'/auth.php';
