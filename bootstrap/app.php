@@ -16,7 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->alias([
+            'current.shop' => \App\Http\Middleware\CurrentShopMiddleware::class,
+        ]);
+
+        $middleware->priority([
+            \App\Http\Middleware\HandleInertiaRequests::class,
+            \App\Http\Middleware\CurrentShopMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

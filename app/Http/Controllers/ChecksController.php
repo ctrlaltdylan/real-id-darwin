@@ -8,11 +8,10 @@ use Illuminate\Support\Facades\Http;
 
 class ChecksController extends Controller
 {
-    //
     public function index(Request $request)
     {
         $user = $request->user();
-        $shop = $user->shop;
+        $shop = $request->attributes->get('currentShop');
 
         $filters = $request->input('checkStatuses', []);
         $term = $request->input('searchTerm', '');
@@ -44,8 +43,7 @@ class ChecksController extends Controller
     }
 
     public function show(Request $request, $id) {
-        $user = $request->user();
-        $shop = $user->shop;
+        $shop = $request->attributes->get('shop');
 
         $response = $shop->api()->request('GET', "checks/{$id}");
 
@@ -63,8 +61,7 @@ class ChecksController extends Controller
     }
 
     public function manually_approve(Request $request, $id) {
-        $user = $request->user();
-        $shop = $user->shop;
+        $shop = $request->attributes->get('currentShop');
 
         $response = $shop->api()->request('POST', "checks/{$id}/manual-approval");
 
@@ -74,13 +71,13 @@ class ChecksController extends Controller
     }
 
     public function manually_reject(Request $request, $id) {
-        $user = $request->user();
-        $shop = $user->shop;
+        $shop = $request->attributes->get('currentShop');
 
         $response = $shop->api()->request('POST', "checks/{$id}/manual-rejection");
 
         $body = json_decode($response->getBody(), true);
 
         return redirect()->route('checks.show', $id)->with('message', 'Manually rejected ID check')->with('status', 'success');
-    } 
+    }
+
 }

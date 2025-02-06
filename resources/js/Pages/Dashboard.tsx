@@ -15,6 +15,7 @@ function Checks({
     searchTerm,
     checkStatuses,
     archived,
+    shops,
 }: {
     checks: any;
     totalChecks: number;
@@ -25,6 +26,7 @@ function Checks({
     checkStatuses: string[];
     archived: boolean;
     page: number;
+    shops: any;
 }) {
     console.log({
         checks,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChecksController;
 use App\Http\Controllers\DevelopersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,9 +26,9 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', [ChecksController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ChecksController::class, 'index'])->middleware(['auth', 'verified', 'current.shop'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'current.shop'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -37,9 +38,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
 
     Route::get('/developers', [DevelopersController::class, 'index'])->name('developers');
-
+    Route::get('/billing', [BillingController::class, 'index'])->name('billing');
 
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/shop/{id}/switch', [ShopController::class, 'switch'])->name('shop.switch');
+});
+
+Route::middleware(['auth', 'superadmin'])->group(function () {
+    Route::prefix('sa')->group(function () {
+        // Define your super admin routes here
+    });
+});
+
 
 Route::group(['prefix' => 'api'], function () {
     Route::post('/queue', [JobController::class, 'store'])->name('api.queue');
