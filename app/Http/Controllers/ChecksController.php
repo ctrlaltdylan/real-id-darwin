@@ -43,7 +43,7 @@ class ChecksController extends Controller
     }
 
     public function show(Request $request, $id) {
-        $shop = $request->attributes->get('shop');
+        $shop = $request->attributes->get('currentShop');
 
         $response = $shop->api()->request('GET', "checks/{$id}");
 
