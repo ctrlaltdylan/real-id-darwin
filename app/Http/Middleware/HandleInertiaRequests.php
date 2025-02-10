@@ -32,14 +32,21 @@ class HandleInertiaRequests extends Middleware
     {
       // request attributes don't exist in this middleware for some reason
       $currentShopId = $request->session()->get('current_shop_id');
-      $shop = $request->user()->shops()->findOrFail($currentShopId);
+      // handle if the user is logged in or not
+      if($request->user()) {
+        $shop = $request->user()->shops()->findOrFail($currentShopId);
+        $shops = $request->user()->shops;
+      } else {
+        $shop = null;
+        $shops = [];
+      }
 
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
                 'currentShop' => $shop,
-                'shops' => $request->user()->shops,
+                'shops' => $shops,
             ],
             'context' => [
             ],
