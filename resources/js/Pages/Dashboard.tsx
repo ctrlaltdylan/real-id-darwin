@@ -92,15 +92,14 @@ function Checks({
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
                                     {checks.map((check: any) => (
-                                        <Link
+                                        <tr
                                             key={check.id}
-                                            href={`/checks/${check.id}`}
+                                            className="hover:bg-gray-100"
                                         >
-                                            <tr
-                                                key={check.id}
-                                                className="hover:bg-gray-100"
-                                            >
-                                                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                            <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                                <Link
+                                                    href={`/checks/${check.id}`}
+                                                >
                                                     <div className="flex items-center">
                                                         <div className="ml-4">
                                                             <div className="font-medium text-gray-900">
@@ -114,16 +113,21 @@ function Checks({
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                </Link>
+                                            </td>
+                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                <Link
+                                                    href={`/checks/${check.id}`}
+                                                >
                                                     <div className="text-gray-900">
                                                         {check.orderId}
                                                     </div>
-                                                    <div className="mt-1 text-gray-500">
-                                                        {/* {person.department} */}
-                                                    </div>
-                                                </td>
-                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                </Link>
+                                            </td>
+                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                <Link
+                                                    href={`/checks/${check.id}`}
+                                                >
                                                     <StatusBadge
                                                         step={check.step}
                                                         success={
@@ -131,18 +135,21 @@ function Checks({
                                                                 ?.success
                                                         }
                                                     />
-                                                </td>
-                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                                    {/* {person.role} */}
+                                                </Link>
+                                            </td>
+                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                <Link
+                                                    href={`/checks/${check.id}`}
+                                                >
                                                     {format(
                                                         parseISO(
                                                             check.createdAt,
                                                         ),
                                                         'EEE. MMMM do yyyy',
                                                     )}
-                                                </td>{' '}
-                                            </tr>
-                                        </Link>
+                                                </Link>
+                                            </td>
+                                        </tr>
                                     ))}
                                 </tbody>
                             </table>
