@@ -4,11 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Shop;
-use Illuminate\Support\Facades\Hash;
 
-class JkDistroSeeder extends Seeder
+class PplsPlug extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,9 +13,9 @@ class JkDistroSeeder extends Seeder
     public function run(): void
     {
         $shop = Shop::firstOrCreate(
-          ['name' => 'https://jkdistro.com'],
+          ['name' => 'https://thepplsplug.com'],
           [
-            'title' => 'JKDistro',
+            'title' => 'ThePplsPlug',
           ]
         );
 
