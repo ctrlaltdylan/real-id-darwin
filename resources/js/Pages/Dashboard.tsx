@@ -3,7 +3,7 @@ import Filters from '@/Components/Home/Filters';
 import Pagination from '@/Components/Pagination';
 import { getQueryParams } from '@/helpers';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { format, parseISO } from 'date-fns';
 
 function Checks({
@@ -92,55 +92,57 @@ function Checks({
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
                                     {checks.map((check: any) => (
-                                        <tr
+                                        <Link
                                             key={check.id}
-                                            className="hover:bg-gray-100"
-                                            onClick={() =>
-                                                router.visit(
-                                                    `/checks/${check.id}`,
-                                                )
-                                            }
+                                            href={`/checks/${check.id}`}
                                         >
-                                            <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                                <div className="flex items-center">
-                                                    <div className="ml-4">
-                                                        <div className="font-medium text-gray-900">
-                                                            {check.firstName &&
-                                                            check.lastName
-                                                                ? `${check.firstName} ${check.lastName}`
-                                                                : 'Unnamed Customer'}
-                                                        </div>
-                                                        <div className="mt-1 text-gray-500">
-                                                            {check.email}
+                                            <tr
+                                                key={check.id}
+                                                className="hover:bg-gray-100"
+                                            >
+                                                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                                    <div className="flex items-center">
+                                                        <div className="ml-4">
+                                                            <div className="font-medium text-gray-900">
+                                                                {check.firstName &&
+                                                                check.lastName
+                                                                    ? `${check.firstName} ${check.lastName}`
+                                                                    : 'Unnamed Customer'}
+                                                            </div>
+                                                            <div className="mt-1 text-gray-500">
+                                                                {check.email}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                                <div className="text-gray-900">
-                                                    {check.orderId}
-                                                </div>
-                                                <div className="mt-1 text-gray-500">
-                                                    {/* {person.department} */}
-                                                </div>
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                                <StatusBadge
-                                                    step={check.step}
-                                                    success={
-                                                        check?.job?.result
-                                                            ?.success
-                                                    }
-                                                />
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                                {/* {person.role} */}
-                                                {format(
-                                                    parseISO(check.createdAt),
-                                                    'EEE. MMMM do yyyy',
-                                                )}
-                                            </td>{' '}
-                                        </tr>
+                                                </td>
+                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                    <div className="text-gray-900">
+                                                        {check.orderId}
+                                                    </div>
+                                                    <div className="mt-1 text-gray-500">
+                                                        {/* {person.department} */}
+                                                    </div>
+                                                </td>
+                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                    <StatusBadge
+                                                        step={check.step}
+                                                        success={
+                                                            check?.job?.result
+                                                                ?.success
+                                                        }
+                                                    />
+                                                </td>
+                                                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                                    {/* {person.role} */}
+                                                    {format(
+                                                        parseISO(
+                                                            check.createdAt,
+                                                        ),
+                                                        'EEE. MMMM do yyyy',
+                                                    )}
+                                                </td>{' '}
+                                            </tr>
+                                        </Link>
                                     ))}
                                 </tbody>
                             </table>
