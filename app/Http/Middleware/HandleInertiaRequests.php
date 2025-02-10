@@ -32,6 +32,12 @@ class HandleInertiaRequests extends Middleware
     {
       // request attributes don't exist in this middleware for some reason
       $currentShopId = $request->session()->get('current_shop_id');
+      
+      if (!$currentShopId && $request->user()) {
+          $currentShopId = $request->user()->shops()->first()->id ?? null;
+      }
+      \Log::debug('Current Shop ID: ' . $currentShopId);
+
       // handle if the user is logged in or not
       if($request->user()) {
         $shop = $request->user()->shops()->findOrFail($currentShopId);
