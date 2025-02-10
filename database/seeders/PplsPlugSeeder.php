@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Shop;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
-class PplsPlug extends Seeder
+class PplsPlugSeeder extends Seeder
 {
     /**
      * Run the database seeds.
