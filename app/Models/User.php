@@ -10,8 +10,8 @@ use App\Models\Shop;
 
 class User extends Authenticatable
 {
-    public function shop() {
-      return $this->belongsTo(Shop::class);
+    public function shops() {
+      return $this->belongsToMany(Shop::class);
     }
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -26,7 +26,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'shop_id',
     ];
 
     /**

@@ -9,7 +9,10 @@ export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const user = usePage().props.auth.user;
+    console.log({ inertia_props: usePage().props?.auth });
+    const user = usePage().props?.auth?.user;
+    const shops = usePage().props?.auth?.shops || [];
+    const currentShop = usePage().props?.auth?.currentShop;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -26,6 +29,47 @@ export default function Authenticated({
                                 </Link>
                             </div>
 
+                            <div className="flex hidden items-center space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <span className="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                            >
+                                                {currentShop?.title ||
+                                                    shops?.[0]?.title}
+                                                <svg
+                                                    className="-me-0.5 ms-2 h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </Dropdown.Trigger>
+
+                                    <Dropdown.Content>
+                                        {shops.map((shop: any) => (
+                                            <Dropdown.Link
+                                                key={shop.id}
+                                                href={route('shop.switch', {
+                                                    id: shop.id,
+                                                })}
+                                            >
+                                                {shop.title}
+                                            </Dropdown.Link>
+                                        ))}
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
+
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('dashboard')}
@@ -36,7 +80,10 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div
+                            id="shop-context"
+                            className="flex hidden items-center sm:ms-6 sm:flex sm:items-center"
+                        >
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -45,7 +92,7 @@ export default function Authenticated({
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {user.name}
+                                                {user?.name}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -73,6 +120,9 @@ export default function Authenticated({
                                             href={route('developers')}
                                         >
                                             Developers
+                                        </Dropdown.Link>
+                                        <Dropdown.Link href={route('billing')}>
+                                            Billing
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
@@ -147,10 +197,10 @@ export default function Authenticated({
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                                {user?.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
-                                {user.email}
+                                {user?.email}
                             </div>
                         </div>
 

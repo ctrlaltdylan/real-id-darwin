@@ -30,10 +30,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+      // request attributes don't exist in this middleware for some reason
+      $currentShopId = $request->session()->get('current_shop_id');
+      $shop = $request->user()->shops()->findOrFail($currentShopId);
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'currentShop' => $shop,
+                'shops' => $request->user()->shops,
+            ],
+            'context' => [
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
