@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'current.shop' => \App\Http\Middleware\CurrentShopMiddleware::class,
         ]);
 
+        $middleware->alias([
+            'superadmin' => \App\Http\Middleware\SuperAdminMiddleware::class,
+        ]);
+
         $middleware->priority([
             \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\CurrentShopMiddleware::class,

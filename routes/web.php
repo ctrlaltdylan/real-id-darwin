@@ -4,6 +4,7 @@ use App\Http\Controllers\ChecksController;
 use App\Http\Controllers\DevelopersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'superadmin'])->group(function () {
     Route::prefix('sa')->group(function () {
-        // Define your super admin routes here
+        Route::get('/', [SuperAdminController::class, 'index'])->name('sa.index');
     });
 });
 
