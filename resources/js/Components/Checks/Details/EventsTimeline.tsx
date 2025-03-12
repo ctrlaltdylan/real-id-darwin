@@ -151,7 +151,7 @@ export function RenderHtml({ html }: { html: string }) {
 
 export default function EventsTimeline({ events = [] }: { events: Event[] }) {
     return (
-        <div className="flow-root">
+        <div className="events-timeline">
             <ul role="list" className="-mb-8">
                 {events
                     .slice(0)

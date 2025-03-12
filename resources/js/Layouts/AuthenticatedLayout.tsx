@@ -56,7 +56,7 @@ export default function Authenticated({
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        {shops.map((shop: any) => (
+                                        {(shops || []).map((shop: any) => (
                                             <Dropdown.Link
                                                 key={shop.id}
                                                 href={route('shop.switch', {
@@ -77,6 +77,12 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                {/* <NavLink
+                                    href={route('settings')}
+                                    active={route().current('settings')}
+                                >
+                                    Settings
+                                </NavLink> */}
                             </div>
                         </div>
 

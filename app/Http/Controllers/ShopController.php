@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ShopController extends Controller
 {
@@ -19,5 +20,12 @@ class ShopController extends Controller
         $request->attributes->set('currentShop', $shop);
 
         return redirect()->route('dashboard');
+    }
+
+    public function settings(Request $request)
+    {
+        $shop = $request->attributes->get('currentShop');
+
+        return Inertia::render('Settings', ['shop' => $shop]);
     }
 }

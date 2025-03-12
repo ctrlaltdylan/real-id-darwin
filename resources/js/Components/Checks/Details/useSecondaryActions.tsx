@@ -103,15 +103,15 @@ export default function useSecondaryActions({
         ];
         // }
 
-        // if (
-        //     check.userPhoto ||
-        //     check.idPhoto ||
-        //     check.backIdPhoto ||
-        //     check.signature ||
-        //     check.proofOfAddress
-        // ) {
-        //     toBeAdded = [...toBeAdded, deletePhotosButton];
-        // }
+        if (
+            check.userPhoto ||
+            check.idPhoto ||
+            check.backIdPhoto ||
+            check.signature ||
+            check.proofOfAddress
+        ) {
+            toBeAdded = [...toBeAdded, deletePhotosButton];
+        }
 
         // if (!['completed', 'in_review'].includes(check.step)) {
         //     toBeAdded = [...toBeAdded, sendReminderButton];

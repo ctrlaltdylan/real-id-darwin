@@ -61,17 +61,24 @@ export default function PageHeading({
     secondaryActions,
     primaryAction,
     details,
+    subtitle,
 }: {
     title: string;
     secondaryActions?: Action[];
     primaryAction?: Action;
     details?: Detail[];
+    subtitle?: string;
 }) {
     return (
         <div className="lg:flex lg:items-center lg:justify-between">
             <div className="min-w-0 flex-1">
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
                     {title}
+                    {subtitle && (
+                        <span className="ml-2 text-base font-normal text-gray-500">
+                            {subtitle}
+                        </span>
+                    )}
                 </h2>
                 <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
                     {details?.map((detail, index) => (
