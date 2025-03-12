@@ -169,6 +169,7 @@ export default function Checkout() {
                 phone,
                 orderId: '#1234567890',
                 shopifyOrder: {
+                    name: 'Order #1234567890',
                     customer: {
                         first_name: firstName,
                         last_name: lastName,
