@@ -176,6 +176,8 @@ export default function Checkout() {
                         phone,
                     },
                     billing_address: {
+                        first_name: 'Dylan',
+                        last_name: 'Pierce',
                         address1: '1280 Winton Ave',
                         city: 'Cleveland',
                         province: 'OH',
@@ -183,6 +185,8 @@ export default function Checkout() {
                         country: 'US',
                     },
                     shipping_address: {
+                        first_name: 'Amy',
+                        last_name: 'Buckley',
                         address1: address,
                         city,
                         province: region,
