@@ -26,10 +26,10 @@ export default function EmptyOrderState({ check }: { check: Check }) {
                         //           check?.id,
                         //       )
                         // :
-                        import.meta.env.VITE_FLOW_URL.replace(
-                            '{{checkId}}',
-                            check?.id,
-                        )
+                        (
+                            import.meta.env.VITE_FLOW_URL ||
+                            'https://idv.link/{{checkId}}'
+                        ).replace('{{checkId}}', check?.id)
                     }
                     readOnly={true}
                     label=""
@@ -37,15 +37,16 @@ export default function EmptyOrderState({ check }: { check: Check }) {
                     connectedRight={
                         <CopyToClipboard
                             text={
-                                shop?.settings?.customFlowUrl
-                                    ? shop?.settings.customFlowUrl.replace(
-                                          '{{checkId}}',
-                                          check?.id,
-                                      )
-                                    : import.meta.env.VITE_FLOW_URL.replace(
-                                          '{{checkId}}',
-                                          check?.id,
-                                      )
+                                // shop?.settings?.customFlowUrl
+                                //     ? shop?.settings.customFlowUrl?.replace(
+                                //           '{{checkId}}',
+                                //           check?.id,
+                                //       )
+                                //     :
+                                (
+                                    import.meta.env.VITE_FLOW_URL ||
+                                    'https://idv.link/{{checkId}}'
+                                ).replace('{{checkId}}', check?.id)
                             }
                             onCopy={() => setToast('ID Check URL copied.')}
                         >
