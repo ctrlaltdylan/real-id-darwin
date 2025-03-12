@@ -102,11 +102,15 @@ export default function CheckDetails({
                         </Card>
                     </Section>
                     <Section variant="oneThird">
-                        <OrderDetails
-                            orderDetails={check.shopifyOrder}
-                            loading={check.loading}
-                            check={check}
-                        />
+                        {check?.shopifyOrder ? (
+                            <OrderDetails
+                                orderDetails={check.shopifyOrder}
+                                loading={check.loading}
+                                check={check}
+                            />
+                        ) : (
+                            <></>
+                        )}
                         <BrowserDetails check={check} />
                         <CopyCheckUrl check={check} />
                     </Section>
