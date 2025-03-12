@@ -20,15 +20,16 @@ export default function EmptyOrderState({ check }: { check: Check }) {
                 <TextField
                     autoComplete="off"
                     value={
-                        shop?.settings?.customFlowUrl
-                            ? shop?.settings.customFlowUrl.replace(
-                                  '{{checkId}}',
-                                  check?.id,
-                              )
-                            : import.meta.env.VITE_FLOW_URL.replace(
-                                  '{{checkId}}',
-                                  check?.id,
-                              )
+                        // shop?.settings?.customFlowUrl
+                        //     ? shop?.settings.customFlowUrl.replace(
+                        //           '{{checkId}}',
+                        //           check?.id,
+                        //       )
+                        // :
+                        import.meta.env.VITE_FLOW_URL.replace(
+                            '{{checkId}}',
+                            check?.id,
+                        )
                     }
                     readOnly={true}
                     label=""
