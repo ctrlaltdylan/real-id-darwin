@@ -97,6 +97,7 @@ const ImagePreview = ({
     sandboxMode,
     showAcknowledgementModal,
     checkId,
+    check,
 }: ImagePreviewProps) => {
     const [rotation, setRotation] = React.useState(0);
     // const { currentUser } = useCurrentUser();
@@ -192,12 +193,42 @@ const ImagePreview = ({
                     alt={photo.type}
                 />
             </a>
-            <figcaption className="block text-sm text-slate-500">
-                {photo.type}
-            </figcaption>
+            <div className="flex w-full justify-between">
+                <figcaption className="block text-sm text-slate-500">
+                    {photo.type}
+                </figcaption>
+                <CaptureMethodFig check={check} photo={photo} />
+            </div>
         </div>
     );
 };
+
+export function CaptureMethodFig({
+    check,
+    photo,
+}: {
+    check: Check;
+    photo: Photo;
+}) {
+    if (!check?.steps?.[photo.canonical]?.captureMethod) {
+        return <></>;
+    }
+
+    const captureMethod = check?.steps?.[photo.canonical]?.captureMethod;
+    let text = '';
+
+    if (captureMethod === 'manual') {
+        text = 'Live photo, captured manually ';
+    } else if (captureMethod === 'auto') {
+        text = 'Live photo, captured automatically';
+    } else if (captureMethod === 'upload') {
+        text = 'File upload';
+    }
+
+    return (
+        <figcaption className="block text-sm text-slate-500">{text}</figcaption>
+    );
+}
 
 const ImageViewer = ({ check }: Props) => {
     const [open, setOpen] = React.useState(false);
@@ -226,6 +257,7 @@ const ImageViewer = ({ check }: Props) => {
         const unmatchedFaces =
             check.inferences?.faceMatch?.UnmatchedFaces || [];
         let photo = {
+            canonical: 'id',
             type: 'Front of ID',
             src: check.idPhoto,
             detailSrc: check.idPhotoDetail,
@@ -237,11 +269,19 @@ const ImageViewer = ({ check }: Props) => {
     }
 
     if (check.backIdPhoto) {
-        photos.push({ type: 'Back of ID', src: check.backIdPhoto });
+        photos.push({
+            canonical: 'backId',
+            type: 'Back of ID',
+            src: check.backIdPhoto,
+        });
     }
 
     if (check.userPhoto) {
-        let photo = { type: 'Headshot', src: check.userPhoto };
+        let photo = {
+            canoncial: 'face',
+            type: 'Headshot',
+            src: check.userPhoto,
+        };
 
         const idBoundingBox =
             check.inferences?.faceMatch?.SourceImageFace?.BoundingBox;
@@ -298,6 +338,7 @@ const ImageViewer = ({ check }: Props) => {
                         }
                         onAcknowledgement={acknowledgeLiability}
                         checkId={check?.id}
+                        check={check}
                     />
                 ))}
             </div>

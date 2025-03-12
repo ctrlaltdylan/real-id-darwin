@@ -3,6 +3,7 @@ import React from 'react';
 type ButtonProps = {
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     status?: 'success' | 'error' | 'warning' | 'info' | 'default';
+    variant?: 'default' | 'connected';
     onAction?: () => void;
     children: React.ReactNode;
     className?: string;
@@ -11,6 +12,7 @@ type ButtonProps = {
 export default function Button({
     size = 'md',
     status = 'default',
+    variant = 'default',
     onAction,
     children,
     className,
@@ -35,7 +37,9 @@ export default function Button({
         <button
             type="button"
             className={clsx(
-                'rounded-md font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                'font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                variant === 'default' && 'rounded-md',
+                variant === 'connected' && 'h-full',
                 sizeClasses[size],
                 statusClasses[status],
                 className,

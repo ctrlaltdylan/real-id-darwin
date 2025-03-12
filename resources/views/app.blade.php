@@ -10,6 +10,11 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <script
+          type="text/javascript"
+          src="https://www.idv.link/assets/index.js"
+        ></script>
+
         <!-- Scripts -->
         @routes
         @viteReactRefresh

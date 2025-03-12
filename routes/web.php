@@ -36,10 +36,14 @@ Route::middleware(['auth', 'current.shop'])->group(function () {
     Route::get('/checks/{id}', [ChecksController::class, 'show'])->name('checks.show');
     Route::post('/checks/{id}/manually-approve', [ChecksController::class, 'manually_approve'])->name('checks.manually_approve'); 
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
+    Route::post('/checks/{id}/delete-data', [ChecksController::class, 'delete_data'])->name('checks.delete_data');
+
+    Route::post('/checks', [ChecksController::class, 'create'])->name('checks.create');
 
     Route::get('/developers', [DevelopersController::class, 'index'])->name('developers');
     Route::get('/billing', [BillingController::class, 'index'])->name('billing');
 
+    Route::get('/settings', [ShopController::class, 'settings'])->name('settings');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -56,6 +60,17 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
 Route::group(['prefix' => 'api'], function () {
     Route::post('/queue', [JobController::class, 'store'])->name('api.queue');
 });
+
+
+Route::get('/checkout', function () {
+    return Inertia::render('Checkout');
+});
+
+Route::get('/order-status', function (Request $request) {
+    return Inertia::render('OrderStatus');
+});
+
+Route::post('/api/checks/create', [ChecksController::class, 'create'])->name('api.checks.create');
 
 
 

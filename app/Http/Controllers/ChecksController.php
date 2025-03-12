@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Shop;
 
 class ChecksController extends Controller
 {
@@ -78,6 +79,32 @@ class ChecksController extends Controller
         $body = json_decode($response->getBody(), true);
 
         return redirect()->route('checks.show', $id)->with('message', 'Manually rejected ID check')->with('status', 'success');
+    }
+
+    public function delete_data(Request $request, $id) {
+        $shop = $request->attributes->get('currentShop');
+
+        $response = $shop->api()->request("DELETE", "checks/{$id}/data");
+
+        $body = json_decode($response->getBody(), true);
+
+        return redirect()->route('checks.show', $id)->with('message', 'Customer photos deleted')->with('status', 'success');
+    }
+
+    public function create(Request $request) {
+      $shopName = $request->input('shopName');
+      // for demo purposes only for now
+        // $shop = $request->attributes->get('currentShop');
+        $shop = Shop::where('name', $shopName)->first();
+
+        $response = $shop->api()->request('POST', 'checks/create', [
+            'json' => $request->all(),
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+
+        // return redirect()->route('checks.show', $body['check']['id'])->with('message', 'ID check created')->with('status', 'success');
+        return response()->json($body);
     }
 
 }
