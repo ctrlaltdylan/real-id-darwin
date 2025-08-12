@@ -30,6 +30,6 @@ class HighWirePayments extends Seeder
             ]
         )->shops()->attach($shop);
 
-        User::findByEmail('dylan@getverdict.com')->shops()->attach($shop);
+        User::firstWhere('email', 'dylan@getverdict.com')->shops()->attach($shop);
     }
 }
