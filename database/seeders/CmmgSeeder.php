@@ -36,9 +36,19 @@ class CmmgSeeder extends Seeder
                 'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
             ]
         );
+
+        $christian = User::firstOrCreate(
+            ['email' => 'christianl@cmmg.com'],
+            [
+                'name' => 'Christian',
+                'password' => Hash::make('euT-xNRkbbPsmTp@kevvj3g'),
+            ]
+        );
         $user->shops()->attach($shop);
         $user->shops()->attach($dev_shop);
-
+        $christian->shops()->attach($shop);
+        $christian->shops()->attach($dev_shop);
+        
         User::firstWhere('email', 'dylan@getverdict.com')->shops()->attach($shop);
         User::firstWhere('email', 'dylan@getverdict.com')->shops()->attach($dev_shop);
     }
