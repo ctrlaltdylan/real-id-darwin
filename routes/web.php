@@ -33,17 +33,23 @@ Route::middleware(['auth', 'current.shop'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/checks/new', [ChecksController::class, 'new'])->name('checks.new');
     Route::get('/checks/{id}', [ChecksController::class, 'show'])->name('checks.show');
-    Route::post('/checks/{id}/manually-approve', [ChecksController::class, 'manually_approve'])->name('checks.manually_approve'); 
+    Route::post('/checks/{id}/manually-approve', [ChecksController::class, 'manually_approve'])->name('checks.manually_approve');
     Route::post('/checks/{id}/manually-reject', [ChecksController::class, 'manually_reject'])->name('checks.manually_reject');
     Route::post('/checks/{id}/delete-data', [ChecksController::class, 'delete_data'])->name('checks.delete_data');
 
     Route::post('/checks', [ChecksController::class, 'create'])->name('checks.create');
 
     Route::get('/developers', [DevelopersController::class, 'index'])->name('developers');
-    Route::get('/billing', [BillingController::class, 'index'])->name('billing');
+
+    // Redirect /billing to Settings billing tab
+    Route::get('/billing', fn() => redirect('/settings?tab=billing'))->name('billing');
 
     Route::get('/settings', [ShopController::class, 'settings'])->name('settings');
+    Route::patch('/settings', [ShopController::class, 'updateSettings'])->name('settings.update');
+    Route::post('/settings/test-webhook', [ShopController::class, 'sendTestWebhook'])->name('settings.testWebhook');
+    Route::post('/settings/billing-portal', [ShopController::class, 'billingPortal'])->name('settings.billingPortal');
 });
 
 Route::middleware(['auth'])->group(function () {

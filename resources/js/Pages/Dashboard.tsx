@@ -28,17 +28,6 @@ function Checks({
     page: number;
     shops: any;
 }) {
-    console.log({
-        checks,
-        checkStatuses,
-        archived,
-        searchTerm,
-        totalChecks,
-        totalPages,
-        size,
-        page,
-    });
-
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 sm:px-6 lg:px-8">
@@ -103,9 +92,8 @@ function Checks({
                                                     <div className="flex items-center">
                                                         <div className="ml-4">
                                                             <div className="font-medium text-gray-900">
-                                                                {check.firstName &&
-                                                                check.lastName
-                                                                    ? `${check.firstName} ${check.lastName}`
+                                                                {(check.firstName || check.lastName)
+                                                                    ? `${check.firstName || ''} ${check.lastName || ''}`.trim()
                                                                     : 'Unnamed Customer'}
                                                             </div>
                                                             <div className="mt-1 text-gray-500">
@@ -202,9 +190,25 @@ export default function Dashboard(props) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    ID Checks
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        ID Checks
+                    </h2>
+                    <Link
+                        href={route('checks.new')}
+                        className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        <svg
+                            className="-ml-0.5 mr-1.5 h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                        </svg>
+                        New Check
+                    </Link>
+                </div>
             }
         >
             <Head title="Dashboard" />
