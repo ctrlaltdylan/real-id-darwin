@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@/Components/Card';
 import ContentEditor from './ContentEditor';
 import BrandingSection from './BrandingSection';
@@ -32,9 +32,33 @@ export default function Appearance({
     setData,
     errors = {},
 }: AppearanceProps) {
+    // Local state for preview to work around Inertia reactivity issues
+    const [previewImageUrl, setPreviewImageUrl] = useState(data.imageUrl || '');
+
+    // Sync local state when data.imageUrl changes (e.g., on page load)
+    useEffect(() => {
+        if (data.imageUrl) {
+            setPreviewImageUrl(data.imageUrl);
+        }
+    }, [data.imageUrl]);
+
     const [contentActiveTab, setContentActiveTab] = useState<
         'intro' | 'in_review' | 'failed' | 'completed'
     >('intro');
+
+    // Wrapper for setData that also updates local preview state
+    const handleSetData = (key: string, value: any) => {
+        if (key === 'imageUrl') {
+            setPreviewImageUrl(value);
+        }
+        setData(key, value);
+    };
+
+    // Create preview data with local imageUrl state
+    const previewData = {
+        ...data,
+        imageUrl: previewImageUrl,
+    };
 
     return (
         <Card title="Appearance Settings">
@@ -57,7 +81,7 @@ export default function Appearance({
                     />
 
                     <div className="border-t border-gray-200 pt-6">
-                        <BrandingSection data={data} setData={setData} />
+                        <BrandingSection data={data} setData={handleSetData} />
                     </div>
 
                     <div className="border-t border-gray-200 pt-6">
@@ -69,7 +93,7 @@ export default function Appearance({
                 <div className="lg:w-96 flex-shrink-0">
                     <div className="sticky top-6">
                         <CheckContentPreview
-                            data={data}
+                            data={previewData}
                             previewState={contentActiveTab}
                         />
                     </div>

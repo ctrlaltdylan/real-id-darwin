@@ -132,7 +132,10 @@ export default function Settings() {
             emailContent: settings.emailContent || {
                 customer: { check: {} },
             },
-            imageUrl: settings.imageUrl || '',
+            // Construct imageUrl from imagePublicId if not directly available
+            imageUrl: settings.imageUrl || (settings.imagePublicId
+                ? `https://res.cloudinary.com/tinyhouse/image/upload/${settings.imagePublicId}`
+                : ''),
             imagePublicId: settings.imagePublicId || '',
             primaryColor: settings.primaryColor || '#007DCC',
             primaryButtonColor: settings.primaryButtonColor || '',

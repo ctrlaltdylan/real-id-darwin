@@ -12,6 +12,7 @@ interface BrandingSectionProps {
 }
 
 export default function BrandingSection({ data, setData }: BrandingSectionProps) {
+    console.log('BrandingSection render - data.imageUrl:', data.imageUrl);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +53,8 @@ export default function BrandingSection({ data, setData }: BrandingSectionProps)
                 },
             );
 
+            console.log('Upload successful:', uploadData);
+            console.log('Setting imageUrl to:', uploadData.secure_url);
             setData('imageUrl', uploadData.secure_url);
             setData('imagePublicId', uploadData.public_id);
         } catch (err) {

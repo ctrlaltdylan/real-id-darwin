@@ -29,8 +29,8 @@ const defaultContents = {
         'Hello [firstName],\n\nThanks for completing ID verification!\n\nYour order has been confirmed and will be processed shortly.',
 };
 
-const defaultLogoUrl =
-    'https://res.cloudinary.com/tinyhouse/image/upload/v1/real-id-logo';
+const defaultImagePublicId = 'Real%20ID/real_id_white_png.png';
+const defaultLogoUrl = `https://res.cloudinary.com/tinyhouse/image/upload/v1/${defaultImagePublicId}`;
 
 export default function CheckContentPreview({
     data,
@@ -73,6 +73,7 @@ export default function CheckContentPreview({
         .replace(/\[phone\]/g, '+1 555-0123');
 
     const logoUrl = data.imageUrl || defaultLogoUrl;
+    console.log('CheckContentPreview - data.imageUrl:', data.imageUrl, 'using:', logoUrl);
     const primaryColor = data.primaryColor || '#007DCC';
     const buttonColor =
         data.primaryButtonColor || data.primaryColor || '#007DCC';
@@ -110,8 +111,9 @@ export default function CheckContentPreview({
                         src={logoUrl}
                         alt="Company Logo"
                         className="max-h-16 mx-auto object-contain"
-                        style={{ filter: 'brightness(0) invert(1)' }}
+                        onLoad={() => console.log('Image loaded successfully:', logoUrl)}
                         onError={(e) => {
+                            console.error('Image failed to load:', logoUrl);
                             // Hide broken images
                             (e.target as HTMLImageElement).style.display = 'none';
                         }}
