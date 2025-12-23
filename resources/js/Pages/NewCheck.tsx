@@ -49,7 +49,6 @@ export default function NewCheck({ defaultContent = '' }: NewCheckProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        setSuccessMessage('');
 
         // Infer delivery methods based on available contact info
         const deliveryMethods: string[] = [];

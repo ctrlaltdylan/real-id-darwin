@@ -16,7 +16,7 @@ class RealIdBcDevSeeder extends Seeder
     public function run(): void
     {
         $shop = Shop::firstOrCreate(
-          ['name' => 'nug4ejpavx'],
+          ['name' => 'nug4ejpavx', 'api_key' => 'IalVBj1aLjTRGQpwpauiK'],
           [
             'title' => 'Real ID BC Dev',
           ]
