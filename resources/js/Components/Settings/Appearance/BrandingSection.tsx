@@ -38,7 +38,7 @@ export default function BrandingSection({ data, setData }: BrandingSectionProps)
         setError(null);
 
         const formData = new FormData();
-        formData.append('upload_preset', 'real_id_unsigned');
+        formData.append('upload_preset', 'kiuetlpk');
         formData.append('file', file);
 
         try {
