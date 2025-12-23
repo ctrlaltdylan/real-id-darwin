@@ -91,20 +91,57 @@ class ChecksController extends Controller
         return redirect()->route('checks.show', $id)->with('message', 'Customer photos deleted')->with('status', 'success');
     }
 
-    public function create(Request $request) {
-      $shopName = $request->input('shopName');
-      // for demo purposes only for now
-        // $shop = $request->attributes->get('currentShop');
-        $shop = Shop::where('name', $shopName)->first();
+    public function new(Request $request) {
+        $shop = $request->attributes->get('currentShop');
 
-        $response = $shop->api()->request('POST', 'checks/create', [
-            'json' => $request->all(),
+        // Fetch shop data to get default content
+        try {
+            $response = $shop->api()->request('GET', 'shop');
+            $shopData = json_decode($response->getBody(), true);
+            $defaultContent = $shopData['settings']['defaultContent'] ?? '';
+        } catch (\Exception $e) {
+            $defaultContent = '';
+        }
+
+        return Inertia::render('NewCheck', [
+            'defaultContent' => $defaultContent,
         ]);
+    }
 
-        $body = json_decode($response->getBody(), true);
+    public function create(Request $request) {
+        $shop = $request->attributes->get('currentShop');
 
-        // return redirect()->route('checks.show', $body['check']['id'])->with('message', 'ID check created')->with('status', 'success');
-        return response()->json($body);
+        // If no shop from middleware (e.g., API call), fall back to shopName param
+        if (!$shop) {
+            $shopName = $request->input('shopName');
+            $shop = Shop::where('name', $shopName)->first();
+        }
+
+        if (!$shop) {
+            return response()->json(['error' => 'Shop not found'], 404);
+        }
+
+        try {
+            $response = $shop->api()->request('POST', 'checks/create', [
+                'json' => $request->all(),
+            ]);
+
+            $body = json_decode($response->getBody(), true);
+
+            // If this is an Inertia request, redirect to the check details page
+            if ($request->header('X-Inertia')) {
+                $checkId = $body['check']['id'];
+                return redirect()->route('checks.show', $checkId)->with('message', 'ID check created and sent successfully')->with('status', 'success');
+            }
+
+            // Otherwise return JSON (for API calls)
+            return response()->json($body);
+        } catch (\Exception $e) {
+            if ($request->header('X-Inertia')) {
+                return back()->withErrors(['error' => 'Failed to create ID check: ' . $e->getMessage()]);
+            }
+            return response()->json(['error' => 'Failed to create ID check: ' . $e->getMessage()], 500);
+        }
     }
 
 }
