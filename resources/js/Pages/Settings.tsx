@@ -209,9 +209,13 @@ export default function Settings() {
     }, [isDirty]);
 
     // Intercept Inertia navigation if there are unsaved changes
+    // But allow form submissions (PATCH/POST/PUT/DELETE) to proceed
     useEffect(() => {
         const removeListener = router.on('before', (event) => {
-            if (isDirty && !showUnsavedModal) {
+            const method = event.detail.visit.method.toLowerCase();
+            const isFormSubmission = ['patch', 'post', 'put', 'delete'].includes(method);
+
+            if (isDirty && !showUnsavedModal && !isFormSubmission) {
                 event.preventDefault();
                 setPendingNavigation(event.detail.visit.url.toString());
                 setShowUnsavedModal(true);
