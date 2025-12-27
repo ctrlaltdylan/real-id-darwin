@@ -1,5 +1,5 @@
-import { useState, FormEventHandler } from 'react';
-import { useForm, usePage } from '@inertiajs/react';
+import { useState, useEffect, FormEventHandler } from 'react';
+import { useForm, usePage, router } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Tabs from '@/Components/Tabs';
@@ -11,6 +11,7 @@ import DevTools from '@/Components/Settings/DevTools';
 import Rules from '@/Components/Settings/Rules';
 import Billing from '@/Components/Settings/Billing';
 import BigCommerceSettings from '@/Components/Settings/BigCommerce';
+import Modal from '@/Components/Modal';
 
 interface Reminder {
     id: string;
@@ -187,6 +188,35 @@ export default function Settings() {
         { id: 'devtools', label: 'Dev Tools' },
     ];
 
+    // Unsaved changes modal state
+    const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+    const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
+
+    // Warn before browser close/refresh if there are unsaved changes
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isDirty]);
+
+    // Intercept Inertia navigation if there are unsaved changes
+    useEffect(() => {
+        const removeListener = router.on('before', (event) => {
+            if (isDirty && !showUnsavedModal) {
+                event.preventDefault();
+                setPendingNavigation(event.detail.visit.url.toString());
+                setShowUnsavedModal(true);
+                return false;
+            }
+        });
+        return () => removeListener();
+    }, [isDirty, showUnsavedModal]);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         patch(route('settings.update'), {
@@ -197,6 +227,33 @@ export default function Settings() {
                 setDefaults(data);
             },
         });
+    };
+
+    // Modal action handlers
+    const handleSaveAndLeave = () => {
+        patch(route('settings.update'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setDefaults(data);
+                setShowUnsavedModal(false);
+                if (pendingNavigation) {
+                    router.visit(pendingNavigation);
+                }
+            },
+        });
+    };
+
+    const handleDiscardAndLeave = () => {
+        reset();
+        setShowUnsavedModal(false);
+        if (pendingNavigation) {
+            router.visit(pendingNavigation);
+        }
+    };
+
+    const handleCancelNavigation = () => {
+        setShowUnsavedModal(false);
+        setPendingNavigation(null);
     };
 
     const shopWithLicenseKey = {
@@ -330,6 +387,36 @@ export default function Settings() {
                     </div>
                 </div>
             </form>
+
+            {/* Unsaved Changes Modal */}
+            <Modal
+                show={showUnsavedModal}
+                onClose={handleCancelNavigation}
+                title="Unsaved Changes"
+                primaryAction={{
+                    label: 'Save Changes',
+                    onClick: handleSaveAndLeave,
+                    status: 'primary',
+                }}
+            >
+                <p>You have unsaved changes. Would you like to save them before leaving?</p>
+                <div className="mt-4 flex gap-3">
+                    <button
+                        type="button"
+                        onClick={handleDiscardAndLeave}
+                        className="text-sm text-red-600 hover:text-red-800"
+                    >
+                        Discard Changes
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleCancelNavigation}
+                        className="text-sm text-gray-600 hover:text-gray-800"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </Modal>
         </AuthenticatedLayout>
     );
 }

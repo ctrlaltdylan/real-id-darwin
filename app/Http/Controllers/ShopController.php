@@ -61,12 +61,38 @@ class ShopController extends Controller
         $shop = $request->attributes->get('currentShop');
 
         try {
+            \Log::info('Settings update request', [
+                'shop_id' => $shop->id,
+                'shop_name' => $shop->name,
+                'api_key' => substr($shop->api_key, 0, 8) . '...',
+                'payload' => $request->all(),
+            ]);
+
             $response = $shop->api()->patch('shop/settings/v2', [
                 'json' => $request->all(),
             ]);
 
+            $body = json_decode($response->getBody()->getContents(), true);
+
+            \Log::info('Settings update response', [
+                'status' => $response->getStatusCode(),
+                'body' => $body,
+            ]);
+
+            if ($response->getStatusCode() !== 200) {
+                \Log::warning('Settings update returned non-200 status', [
+                    'status' => $response->getStatusCode(),
+                ]);
+                return back()->with('error', 'Failed to update settings: Unexpected response');
+            }
+
             return back()->with('success', 'Settings updated successfully');
         } catch (\Exception $e) {
+            \Log::error('Settings update failed', [
+                'shop_id' => $shop->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             return back()->with('error', 'Failed to update settings: ' . $e->getMessage());
         }
     }
