@@ -83,17 +83,17 @@ class ShopController extends Controller
                 \Log::warning('Settings update returned non-200 status', [
                     'status' => $response->getStatusCode(),
                 ]);
-                return back()->with('error', 'Failed to update settings: Unexpected response');
+                return back()->with('message', 'Failed to update settings: Unexpected response')->with('status', 'error');
             }
 
-            return back()->with('success', 'Settings updated successfully');
+            return back()->with('message', 'Settings updated successfully')->with('status', 'success');
         } catch (\Exception $e) {
             \Log::error('Settings update failed', [
                 'shop_id' => $shop->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            return back()->with('error', 'Failed to update settings: ' . $e->getMessage());
+            return back()->with('message', 'Failed to update settings: ' . $e->getMessage())->with('status', 'error');
         }
     }
 

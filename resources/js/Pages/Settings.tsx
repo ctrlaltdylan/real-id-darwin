@@ -114,10 +114,14 @@ interface PageProps {
     shop: Shop;
     shopData: ShopData;
     subscription?: Subscription | null;
+    toast?: {
+        message?: string;
+        status?: 'success' | 'error';
+    };
 }
 
 export default function Settings() {
-    const { shop, shopData, subscription } = usePage<{ props: PageProps }>().props as unknown as PageProps;
+    const { shop, shopData, subscription, toast } = usePage<{ props: PageProps }>().props as unknown as PageProps;
 
     // Check URL params for initial tab (e.g., from billing redirect)
     const urlParams = new URLSearchParams(window.location.search);
@@ -304,7 +308,7 @@ export default function Settings() {
                     </div>
                 )}
 
-                {/* Success/Error Messages */}
+                {/* Success Message */}
                 <Transition
                     show={recentlySuccessful}
                     enter="transition ease-out duration-300"
@@ -322,6 +326,17 @@ export default function Settings() {
                         </div>
                     </div>
                 </Transition>
+
+                {/* Error Message from Server */}
+                {toast?.status === 'error' && toast?.message && (
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                        <div className="bg-red-50 border border-red-200 rounded-md p-4">
+                            <p className="text-sm text-red-700">
+                                {toast.message}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 <div className="py-6">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
