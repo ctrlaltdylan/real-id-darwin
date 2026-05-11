@@ -10,7 +10,6 @@ import Notifications from '@/Components/Settings/Notifications';
 import DevTools from '@/Components/Settings/DevTools';
 import Rules from '@/Components/Settings/Rules';
 import Billing from '@/Components/Settings/Billing';
-import BigCommerceSettings from '@/Components/Settings/BigCommerce';
 import Modal from '@/Components/Modal';
 
 interface Reminder {
@@ -48,14 +47,6 @@ interface ShopSettings {
     webhookEnabled?: boolean;
     webhookUrl?: string;
     webhookSecret?: string;
-
-    // BigCommerce
-    bc?: {
-        clientId?: string;
-        clientSecret?: string;
-        accessToken?: string;
-        apiPath?: string;
-    };
 
     // Rules
     idCheckType?: string;
@@ -159,14 +150,6 @@ export default function Settings() {
             webhookUrl: settings.webhookUrl || '',
             webhookSecret: settings.webhookSecret || '',
 
-            // BigCommerce
-            bc: settings.bc || {
-                clientId: '',
-                clientSecret: '',
-                accessToken: '',
-                apiPath: '',
-            },
-
             // Rules
             idCheckType: settings.idCheckType || 'id',
             includeBackId: settings.includeBackId || false,
@@ -187,7 +170,6 @@ export default function Settings() {
         { id: 'appearance', label: 'Appearance' },
         { id: 'notifications', label: 'Notifications' },
         { id: 'rules', label: 'Rules' },
-        { id: 'bigcommerce', label: 'BigCommerce' },
         { id: 'billing', label: 'Billing' },
         { id: 'devtools', label: 'Dev Tools' },
     ];
@@ -373,13 +355,6 @@ export default function Settings() {
                                     data={data}
                                     setData={setData}
                                     errors={errors}
-                                />
-                            )}
-
-                            {activeTab === 'bigcommerce' && (
-                                <BigCommerceSettings
-                                    data={data}
-                                    setData={setData}
                                 />
                             )}
 
