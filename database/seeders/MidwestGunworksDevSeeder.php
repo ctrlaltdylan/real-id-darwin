@@ -23,5 +23,22 @@ class MidwestGunworksDevSeeder extends Seeder
         );
 
         User::firstWhere('email', 'dylan@getverdict.com')->shops()->attach($shop);
+
+        $newUsers = [
+            ['name' => 'Dave', 'email' => 'dave@midwestgunworks.com'],
+            ['name' => 'Bens', 'email' => 'bens@midwestgunworks.com'],
+        ];
+
+        foreach ($newUsers as $attrs) {
+            $user = User::firstOrCreate(
+                ['email' => $attrs['email']],
+                [
+                    'name' => $attrs['name'],
+                    'password' => Hash::make('password'),
+                ]
+            );
+
+            $user->shops()->syncWithoutDetaching([$shop->id]);
+        }
     }
 }
