@@ -1,4 +1,5 @@
 import ApiSettings from './ApiSettings';
+import JsSdkSettings from './JsSdkSettings';
 import WebhookSettings from './WebhookSettings';
 
 interface DevToolsProps {
@@ -24,6 +25,7 @@ export default function DevTools({
     return (
         <div className="space-y-6">
             <ApiSettings shop={shop} />
+            <JsSdkSettings shop={shop} />
             <WebhookSettings data={data} setData={setData} errors={errors} />
         </div>
     );
