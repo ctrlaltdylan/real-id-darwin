@@ -229,6 +229,12 @@ export default function Authenticated({
                 </div>
             </nav>
 
+            {currentShop?.sandboxMode && (
+                <div className="bg-orange-500 py-1.5 text-center text-sm font-medium text-white">
+                    Test mode — checks created here are not billed
+                </div>
+            )}
+
             {header && (
                 <header className="bg-white shadow">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
