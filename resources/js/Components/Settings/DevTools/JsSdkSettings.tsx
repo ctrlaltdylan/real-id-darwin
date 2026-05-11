@@ -1,5 +1,8 @@
 import Card from '@/Components/Card';
 import CodeBlock from '@/Components/CodeBlock';
+import CopyButton from '@/Components/CopyButton';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
 
 interface JsSdkSettingsProps {
     shop: {
@@ -32,6 +35,24 @@ export default function JsSdkSettings({ shop }: JsSdkSettingsProps) {
 
             <div className="space-y-6">
                 <div>
+                    <InputLabel value="Public Key" />
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                        <TextInput
+                            value={apiToken}
+                            readOnly
+                            className="flex-1 font-mono text-sm"
+                        />
+                        <CopyButton
+                            text={apiToken}
+                            className="ml-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Pass this as the <code className="bg-gray-100 px-1 py-0.5 rounded">apiKey</code> when initializing the SDK. Safe to embed in client-side code.
+                    </p>
+                </div>
+
+                <div className="border-t border-gray-200 pt-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">
                         Install
                     </h3>
