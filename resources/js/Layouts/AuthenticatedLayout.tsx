@@ -230,8 +230,16 @@ export default function Authenticated({
             </nav>
 
             {currentShop?.sandboxMode && (
-                <div className="bg-orange-500 py-1.5 text-center text-sm font-medium text-white">
-                    Test mode — checks created here are not billed
+                <div className="bg-orange-500 py-1.5 text-center text-sm text-white">
+                    <strong>Test Mode</strong> — Unlimited free checks, mocked results.{' '}
+                    <a
+                        href="https://getverdict.com/help/docs/getting-started/test-mode"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-orange-100"
+                    >
+                        More details
+                    </a>
                 </div>
             )}
 
