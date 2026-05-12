@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -47,11 +48,17 @@ class HandleInertiaRequests extends Middleware
         $shops = [];
       }
 
+      $currentShopPayload = null;
+      if ($shop) {
+          $currentShopPayload = $shop->toArray();
+          $currentShopPayload['sandboxMode'] = $this->fetchSandboxMode($shop);
+      }
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
-                'currentShop' => $shop,
+                'currentShop' => $currentShopPayload,
                 'shops' => $shops,
             ],
             'context' => [
@@ -65,5 +72,23 @@ class HandleInertiaRequests extends Middleware
                 'status' => $request->session()->get('status'),
             ],
         ];
+    }
+
+    /**
+     * Fetch the upstream shop's sandboxMode flag, cached briefly so the
+     * shared-prop middleware doesn't hit the core API on every request.
+     */
+    private function fetchSandboxMode($shop): bool
+    {
+        return Cache::remember("shop:{$shop->id}:sandbox_mode", 30, function () use ($shop) {
+            try {
+                $response = $shop->api()->request('GET', 'shop');
+                $body = json_decode($response->getBody(), true) ?? [];
+                return (bool) ($body['sandboxMode'] ?? false);
+            } catch (\Throwable $e) {
+                \Log::warning("Failed to fetch sandboxMode for shop {$shop->id}: {$e->getMessage()}");
+                return false;
+            }
+        });
     }
 }

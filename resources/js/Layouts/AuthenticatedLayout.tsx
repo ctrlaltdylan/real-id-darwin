@@ -229,6 +229,20 @@ export default function Authenticated({
                 </div>
             </nav>
 
+            {currentShop?.sandboxMode && (
+                <div className="bg-orange-500 py-1.5 text-center text-sm text-white">
+                    <strong>Test Mode</strong> — Unlimited free checks, mocked results.{' '}
+                    <a
+                        href="https://getverdict.com/help/docs/getting-started/test-mode"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-orange-100"
+                    >
+                        More details
+                    </a>
+                </div>
+            )}
+
             {header && (
                 <header className="bg-white shadow">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
